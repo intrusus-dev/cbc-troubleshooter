@@ -22,17 +22,12 @@ Write-Host ""
 Write-Host ""
 
 # Check for Admin privileges
-function CheckIfAdmin {
-    $currentUser = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())
-    return $currentUser.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-if (-not (CheckIfAdmin)) {
-    $title = "Script requires elevated privileges"
-    $message = "This script requires elevated privileges to run. Please right-click on the PowerShell icon and select 'Run as administrator'."
-    $icon = [System.Windows.Forms.MessageBoxIcon]::Error
-    [System.Windows.Forms.MessageBox]::Show($message, $title, $icon)
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Warning "This script requires elevated privileges to run. Please enter the administrator credentials below to continue."
 
-    Exit 1
+    # Launch a new PowerShell process with elevated privileges
+    Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$($PSCommandPath)`"" -Verb RunAs
+    Exit
 }
 
 # Put sensor into bypass mode
