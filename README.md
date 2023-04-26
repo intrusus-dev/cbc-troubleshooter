@@ -22,34 +22,6 @@ This PowerShell script is designed to help Solution Engineering (SE) colleagues 
 3. Run the script by typing the following command: `.\cb-troubleshooter.ps1`
 4. Follow the prompts to select a troubleshooting option
 
-## Troubleshooting Options
-1. Get system information
-This option displays the following information:
-- Hostname
-- Username
-- Carbon Black Cloud sensor version
-- AMSI status
-- CLI authenticated user
-- Backend server
-- Company code
-- Policy name
-
-2. Check network connectivity to Carbon Black Cloud server
-This option tests connectivity to the Carbon Black Cloud server by pinging the server's IP address and domain name.
-
-3. Get log files for Carbon Black Support
-This option compresses the following log files into a ZIP archive:
-- C:\ProgramData\CarbonBlack\Logs\CarbonBlackDefense.log
-- C:\ProgramData\CarbonBlack\Logs\CarbonBlackResponse.log
-- C:\ProgramData\CarbonBlack\Logs\CarbonBlackSensor.log
-The archive is saved to the user's desktop.
-
-4. Put Carbon Black Cloud sensor into bypass mode (requires admin privileges)
-This option puts the Carbon Black Cloud sensor into bypass mode by running the `repcli bypass 1` command. This requires admin privileges.
-
-5. Disable bypass mode for Carbon Black Cloud sensor (requires admin privileges)
-This option disables bypass mode for the Carbon Black Cloud sensor by running the `repcli bypass 0` command. This requires admin privileges.
-
 ## License
 This script is distributed under the MIT License. For more information, please see the LICENSE file.
 
