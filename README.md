@@ -25,22 +25,30 @@ The script provides the following features:
 
 The following features are planned for future releases of the script:
 
-- Checking network connectivity to the Carbon Black Cloud server
+- 🌐 Checking network connectivity to the Carbon Black Cloud server
   This option will perform more in-depth network tests, such as verifying that the required ports are open and testing the latency and packet loss of the connection.
-- Checking if the sensor is using a proxy correctly, if a proxy is required
+
+- 🔒 Checking if the sensor is using a proxy correctly, if a proxy is required
   This option will check if the proxy settings are correctly configured and if the sensor can communicate with the server through the proxy.
-- Checking connection with Sensor Gateway
+
+- 🌍 Checking connection with Sensor Gateway
   This option will verify that the sensor can communicate with the Sensor Gateway and that the Sensor Gateway is properly configured.
-- Checking if SSL inspection is interfering with the connection between the sensor and the Carbon Black Cloud server
+
+- 🔑 Checking if SSL inspection is interfering with the connection between the sensor and the Carbon Black Cloud server
   This option will check if any SSL inspection devices are causing issues with the sensor's communication with the Carbon Black Cloud server.
-- Checking if DNS issues persist
+
+- 🌐 Checking if DNS issues persist
   This option will verify if DNS resolution issues are causing problems with the sensor's communication with the Carbon Black Cloud server.
-- Checking if VDI sensor requirements are set correctly
+
+- 💻 Checking if VDI sensor requirements are set correctly
   This option will verify if the sensor is correctly configured for use in a virtual desktop infrastructure (VDI) environment.
-- Option to make an automatic walkthrough of all options
+
+- 🔄 Option to make an automatic walkthrough of all options
   This option will allow the user to run a complete walkthrough of all the troubleshooting options in the script, without having to manually select each one.
-- Option to summarize findings for VMware Carbon Black support cases
+
+- 📝 Option to summarize findings for VMware Carbon Black support cases
   This option will summarize the findings from the troubleshooting options and generate a report that can be submitted to VMware Carbon Black support for further assistance.
+
 
 Stay tuned for more updates and features in future releases of the script!
 
