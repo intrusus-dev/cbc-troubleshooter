@@ -1,3 +1,4 @@
+# Declare Variables
 clear
 $year = (Get-Date).Year.ToString()
 $banner = @'
@@ -10,6 +11,7 @@ _|_|_|_|  _|  _|_|    _|_|_|  _|_|_|    _|_|_|_|  _|  _|_|
 
 '@
 
+# Display Welcome Screen
 Write-Host $logo
 Write-Host $banner
 Write-Host "VMware Carbon Black - TRoubleSHooTR"
@@ -30,32 +32,30 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Exit
 }
 
-# Put sensor into bypass mode
-$regKey = "HKLM:\System\CurrentControlSet\Services\CbDefense"
-$isBypass = $false
-
-$repcliStatus = & "C:\Program Files\Confer\repcli" status 2>&1
-if ($repcliStatus -match "Sensor State\[Bypass Mode\]") {
-    $isBypass = $true
-}
-
-if ($isBypass) {
-    Write-Host "I can see that the sensor is already in bypass mode. Thank you!"
-}
-else {
-    Write-Host "Putting Carbon Black Cloud sensor into bypass mode"
-    # Run the repcli command with bypass option
-    & "C:\Program Files\Confer\repcli.exe" bypass 1
-    $isBypass = $true
-}
-
-## Going into Main Menu
+# Going into Main Menu
 do {
     $choice = Read-Host "Enter your choice (1-4)"
 } until ($choice -match '^[1-4]$')
 
 switch ($choice) {
     1 {
+        # Put sensor into bypass mode
+        $isBypass = $false
+        $repcliStatus = & "C:\Program Files\Confer\repcli" status 2>&1
+        if ($repcliStatus -match "Sensor State\[Bypass Mode\]") {
+            $isBypass = $true
+        }
+
+        if ($isBypass) {
+            Write-Host "I can see that the sensor is already in bypass mode. Thank you!"
+        }
+        else {
+            Write-Host "Putting Carbon Black Cloud sensor into bypass mode"
+            # Run the repcli command with bypass option
+            & "C:\Program Files\Confer\repcli.exe" bypass 1
+            $isBypass = $true
+        }
+
         # Code to get basic info about the system
         Write-Host "Getting basic system info..."
         # Get the hostname
