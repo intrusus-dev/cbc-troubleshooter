@@ -19,8 +19,6 @@ The script provides the following features:
 3. Run the script by typing the following command: `.\cb-troubleshooter.ps1`
 4. Follow the prompts to select a troubleshooting option
 
-# Carbon Black Cloud SE Troubleshooter
-
 ## Upcoming Features
 
 The following features are planned for future releases of the script:
