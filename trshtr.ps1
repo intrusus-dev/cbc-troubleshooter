@@ -2,12 +2,12 @@
 clear
 $year = (Get-Date).Year.ToString()
 $banner = @'
-                                                            
-_|                          _|          _|                
-_|_|_|_|  _|  _|_|    _|_|_|  _|_|_|    _|_|_|_|  _|  _|_|  
-  _|      _|_|      _|_|      _|    _|    _|      _|_|      
-  _|      _|            _|_|  _|    _|    _|      _|        
-    _|_|  _|        _|_|_|    _|    _|      _|_|  _|        
+
+_|                          _|          _|
+_|_|_|_|  _|  _|_|    _|_|_|  _|_|_|    _|_|_|_|  _|  _|_|
+  _|      _|_|      _|_|      _|    _|    _|      _|_|
+  _|      _|            _|_|  _|    _|    _|      _|
+    _|_|  _|        _|_|_|    _|    _|      _|_|  _|
 
 '@
 
@@ -66,7 +66,7 @@ switch ($choice) {
 
         # Get the Carbon Black Cloud Sensor version
         $sensorVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\CbDefense" -Name "SensorVersion"
-       
+
         # Get the cfg.ini file content
         $cfgFile = 'C:\ProgramData\CarbonBlack\DataFiles\cfg.ini'
         $cfgContent = Get-Content $cfgFile
@@ -98,7 +98,23 @@ switch ($choice) {
     }
     2 {
         # Code to check network connectivity to CBC
-        Write-Host "Checking network connectivity to CBC..."
+        Show-EnvironmentMenu
+        $envChoice = Read-Host "Enter the number of your choice (1-6)"
+
+        if ($envChoice -match '^[1-6]$') {
+            $envChoice = [int]$envChoice
+            $backendUrls = @{
+                1 = "https://devices.confer.net"
+                2 = "https://dev5.conferdeploy.net"
+                3 = "https://dev-prod05.conferdeploy.net"
+                4 = "https://dev-prod06.conferdeploy.net"
+                5 = "https://dev-prodnrt.conferdeploy.net"
+                6 = "https://dev-prodsyd.conferdeploy.net"
+            }
+
+            $backendUrl = $backendUrls[$envChoice]
+            Write-Host "You have selected $($backendUrl) as the backend URL."
+        }
     }
     3 {
         # Code to get log files for CB Support
