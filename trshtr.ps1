@@ -101,7 +101,8 @@ switch ($choice) {
         Show-EnvironmentMenu
         $envChoice = Read-Host "Enter the number of your choice (1-6)"
 
-        if ($envChoice -match '^[1-6]$') {
+        if ($envChoice -match '^[1-6]$')
+        {
             $envChoice = [int]$envChoice
             $backendUrls = @{
                 1 = "https://devices.confer.net"
@@ -113,7 +114,90 @@ switch ($choice) {
             }
 
             $backendUrl = $backendUrls[$envChoice]
-            Write-Host "You have selected $($backendUrl) as the backend URL."
+            Write-Host "You have selected $( $backendUrl ) as the backend URL."
+
+            # Test HTTP response code for the specified URL
+            $registrationUrl = "$backendUrl/services/registration"
+            $response = Invoke-RestMethod -Uri $registrationUrl -Method Get
+
+            if ($response.StatusCode -eq 405)
+            {
+                Write-Host "Success. HTTP response code 405 received. The URL is accessible."
+            }
+            else
+            {
+                Write-Host "No success. HTTP response code $( $response.StatusCode ) received."
+            }
+
+            #Test network connection to port 443
+            $hostname = $backendUrl -replace 'https://', ''
+            $tncResult = Test-NetConnection -ComputerName $hostname -Port 443
+
+            if ($tncResult.TcpTestSucceeded)
+            {
+                Write-Host "Connection to $hostname on port 443 is succesful."
+            }
+            else
+            {
+                Write-Host "Connection to $hostname on port 443 failed."
+            }
+
+            # Test Windows firewall rules to see if correct ports are open on endpoint
+            $requiredPorts = @(
+            @{ Port = 80; Name = 'TCP 80 (outbound)' },
+            @{ Port = 53; Name = 'UDP 53 (outbound)' }
+            )
+
+            # Loop through each port
+            foreach ($port in $requiredPorts)
+            {
+                $ruleName = "CBC_Troubleshooter_$port"
+                $firewallRule = Get-NetFirewallRule -DisplayName $ruleName
+
+                if ($firewallRule)
+                {
+                    if ($firewallRule.Enabled -and $firewallRule.Action -eq 'Allow')
+                    {
+                        Write-Host "Firewall rule for port $port is correctly configured."
+                    }
+                    else
+                    {
+                        Write-Host "Firewall rule for port $port is not correctly configured."
+                    }
+                }
+                else
+                {
+                    Write-Host "Firewall rule for port $port does not exist."
+                }
+            }
+
+            # Test for other required URLs
+            # URLs to test
+            $urlsToTest = @(
+            "https://content.carbonblack.io",
+            "http://updates2.cdc.carbonblack.io/update2",
+            "https://updates2.cdc.carbonblack.io/update2",
+            "http://ocsp.godaddy.com",
+            "http://crl.godaddy.com",
+            "http://crl3.digicert.com",
+            "http://crl4.digicert.com"
+            )
+
+            foreach ($url in $urlsToTest)
+            {
+                $tncResult = Test-NetConnection -ComputerName $url -InformationLevel Quiet
+
+                if ($tncResult)
+                {
+                    Write-Host "Connection to $url is successful."
+                }
+                else
+                {
+                    Write-Host "Connection to $url failed."
+                }
+            }
+        } else {
+            Write-Host "Invalid choice. Please select a valid option (1-6)."
         }
     }
     3 {
